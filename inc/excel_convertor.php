@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (isset($_POST['submit_import'])) {
 	$convert = new excel_convert($_FILES['import_file']['name'], $_FILES['import_file']['tmp_name']);
-	$convert->right_array();
+	$array = $convert->right_array();
 
 	include_once'counting.php';
 

@@ -78,7 +78,7 @@ class excel_convert extends base_excel_convert {
 		if ($this->allowed_suffix() == true) {
 			$this->convert();
 			$this->change_keys();
-			header("location: ../index.php?error=none");
+			return $this->result;
 			exit();
 		}else{
 			header("location: ../index.php?error=invalidfilesuffix");
