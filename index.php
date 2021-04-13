@@ -8,6 +8,13 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
+  <?php
+  // show errors
+  ini_set('display_errors', '1');
+  ini_set('display_startup_errors', '1');
+  error_reporting(E_ALL);
+  ?>
+
     <title>Zadanie Neoship</title>
   </head>
 <body>
@@ -19,7 +26,7 @@
         Aplikacia na vypocet ceny zasielok
       </h3>
       <hr class="my-4">
-      <form action="" method="POST" enctype="multipart/form-data">
+      <form action="inc/excel_convertor.php" method="POST" enctype="multipart/form-data">
         <div class="card card-body">
           <div class="row justify-content-center">
             <div class="col-2 my-auto">
