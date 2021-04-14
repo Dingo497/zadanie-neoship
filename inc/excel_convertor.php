@@ -5,6 +5,7 @@
 	error_reporting(E_ALL);
 
 include_once'classes/excel_converting.php';
+include_once'classes/get_recipient_data.php';
 
 	// import phpspreadsheetu
 require '../vendor/autoload.php';

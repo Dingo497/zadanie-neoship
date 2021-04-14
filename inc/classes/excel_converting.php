@@ -65,6 +65,12 @@ class excel_convert extends base_excel_convert {
 
 //	Zmena klucov samotnych zaseliek
 	function change_keys(){
+		$this->data_array['0']['12'] = 'shipping';
+		$this->data_array['0']['13'] = 'extras';
+		$this->data_array['0']['14'] = 'cash on delivery';
+		$this->data_array['0']['15'] = 'total with DPH';
+		$this->data_array['0']['16'] = 'total without DPH';
+		$this->data_array['0']['17'] = 'total with DPH and package';
 		$array = $this->data_array['0'];
 		foreach ($this->data_array as $key => $value) {
 			array_push($this->result,array_combine($array, $value));
