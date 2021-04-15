@@ -2,21 +2,61 @@
 
 class base_get_recipient_data {
 
-	public function get_country(){
+	public function clear_arr(){
 		null;
 	}
 
-	public function get_delivery_cash(){
+	public function get_minMax($a, $min, $max) {
 		null;
 	}
 
-	public function get_weight(){
+	public function set_new_value($what, $where, $value){
 		null;
 	}
 
-	public function get_extras(){
+	public function discount_maxKg($kg){
 		null;
-	} 
+	}
+
+	public function SK_shipping() {
+		null;
+	}
+
+	public function HUCZ_shipping() {
+		null;
+	}
+
+	public function AT_shipping() {
+		null;
+	}
+
+	public function SK_shipping_cash(){
+		null;
+	}
+
+	public function HUCZ_shipping_cash(){
+		null;
+	}
+
+	public function AT_shipping_cash(){
+		null;
+	}
+
+	public function shipping_extras($country){
+		null;
+	}
+
+	public function total_withoutDPH(){
+		null;
+	}
+
+	public function total_withDPH(){
+		null;
+	}
+
+	public function total_withDPH_and_package(){
+		null;
+	}
 
 }
 
@@ -30,6 +70,17 @@ class get_recipient_data extends base_get_recipient_data {
 //	Na priradenie array do classy
 	function __construct($array) {
 		$this->array = $array;
+	}
+
+
+//	Ak dostanem z excelu velke cislo tak mi o hodi na string, tu tomu zabranujem
+	function clear_arr(){
+		foreach ($this->array as $key => $value) {
+			$result = str_replace(',', '', $value['dobierka']);
+			$this->set_new_value($key, 'dobierka', $result);
+			$result = str_replace(',', '', $value['váha']);
+			$this->set_new_value($key, 'váha', $result);
+		}
 	}
 
 
@@ -55,7 +106,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
-//	Na vypocet ceny prepravy balika
+//	Na vypocet ceny prepravy balika na SK
 	function SK_shipping() {
 		foreach ($this->array as $key => $value) {
 			if ($value['príjemca-štát'] == 'Slovenská republika [SK]') {
@@ -102,7 +153,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
-//	Na vypocet ceny prepravy balika
+//	Na vypocet ceny prepravy balika v CZ a HU
 	function HUCZ_shipping() {
 		foreach ($this->array as $key => $value) {
 			if ($value['príjemca-štát'] == 'Česká republika [CZ]' || $value['príjemca-štát'] == 'Maďarská republika [HU]') {
@@ -140,7 +191,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
-//	Na vypocet ceny prepravy balika
+//	Na vypocet ceny prepravy balika v AT
 	function AT_shipping() {
 		foreach ($this->array as $key => $value) {
 			if ($value['príjemca-štát'] == 'Rakúsko [AT]') {
@@ -181,6 +232,18 @@ class get_recipient_data extends base_get_recipient_data {
 	}	
 
 
+//	Ci ma v zasielke dobierku na SK ak ano daj jej poplatok
+	function SK_shipping_cash(){
+		foreach ($this->array as $key => $value) {
+			if ($value['príjemca-štát'] == 'Slovenská republika [SK]' && $value['dobierka'] == true) {
+				if ($this->get_minMax($value['dobierka'], 0.01, 3300.00)) {
+					$this->set_new_value($key, 'cash on delivery', 0.6);
+				}
+			}
+		}
+	}
+
+
 //	Ci ma v zasielke dobierku na HU, CZ ak ano daj jej poplatok
 	function HUCZ_shipping_cash(){
 		foreach ($this->array as $key => $value) {
@@ -194,18 +257,6 @@ class get_recipient_data extends base_get_recipient_data {
 				if ($this->get_minMax($value['dobierka'], 1000.01, 3300.00)) {
 					$result = ($value['dobierka'] / 100) * 1.05;
 					$this->set_new_value($key, 'cash on delivery', $result);
-				}
-			}
-		}
-	}
-
-
-//	Ci ma v zasielke dobierku na SK ak ano daj jej poplatok
-	function SK_shipping_cash(){
-		foreach ($this->array as $key => $value) {
-			if ($value['príjemca-štát'] == 'Slovenská republika [SK]' && $value['dobierka'] == true) {
-				if ($this->get_minMax($value['dobierka'], 0.01, 3300.00)) {
-					$this->set_new_value($key, 'cash on delivery', 0.6);
 				}
 			}
 		}
@@ -228,6 +279,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
+//	Ci ma v zasielke extra priplatky ak ano pridaj poplatok
 	function shipping_extras($country){
 		foreach ($this->array as $key => $value) {
 			if ($value['príjemca-štát'] == $country) {
@@ -242,6 +294,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
+//	Sucet vsetkych poplatkov bez DPH
 	function total_withoutDPH(){
 		foreach ($this->array as $key => $value) {
 			$result = $value['shipping'] + $value['extras'] + $value['cash on delivery'];
@@ -250,6 +303,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
+//	Sucet vsetkych poplatkov s DPH
 	function total_withDPH(){
 		foreach ($this->array as $key => $value) {
 			$result = ($value['total without DPH'] / 100) * 20 + $value['total without DPH'];
@@ -258,6 +312,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
+//	Sucet dopravy s poplatkami s DPH s balikom kde priratam DPH cena ktoru zaplati prijemca
 	function total_withDPH_and_package(){
 		foreach ($this->array as $key => $value) {
 			$cash_DPH = ($value['dobierka']  / 100) * 20 + $value['dobierka'];
@@ -267,16 +322,7 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
-	function clear_arr(){
-		foreach ($this->array as $key => $value) {
-			$result = str_replace(',', '', $value['dobierka']);
-			$this->set_new_value($key, 'dobierka', $result);
-			$result = str_replace(',', '', $value['váha']);
-			$this->set_new_value($key, 'váha', $result);
-		}
-	}
-
-
+// result
 	function result_data(){
 		$this->clear_arr();
 		$this->SK_shipping();
