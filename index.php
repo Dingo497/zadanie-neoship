@@ -49,32 +49,34 @@
   <table class="table mt-5">
     <thead>
       <tr>
-        <th scope="col">Referenčné číslo</th>
-        <th scope="col">Dobierka bez DPH</th>
-        <th scope="col">Váha</th>
-        <th scope="col">Príplatky(cena)</th>
-        <th scope="col">Doprava</th>
-        <th scope="col">Poplatok za dobierku</th>
-        <th scope="col">Spolu doprava bez DPH</th>
-        <th scope="col">Spolu doprava s DPH</th>
-        <th scope="col">Spolu s dobierkou s DPH</th>
+        <th>Referenčné číslo</th>
+        <th>Krajina</th>
+        <th>Váha</th>
+        <th>Dobierka bez DPH</th>
+        <th>Spolu doprava bez DPH</th>
+        <th>Spolu doprava s DPH</th>
+        <th>Spolu zasielka</th>
       </tr>
     </thead>
     <tbody>
 
-<?php if (!empty($_SESSION['final_array'])) : ?>
+<?php if (!empty($_SESSION['final_array'])) : //session_destroy(); ?>
   <?php foreach ($_SESSION['final_array'] as $value) : ?>
 
       <tr>
         <td><a href=""><?php echo $value['referenčné číslo'] ?></a></td>
-        <td><?php echo $value['dobierka'] ?></td>
-        <td><?php echo $value['váha'] ?></td>
-        <td><?php echo $value['extras'] ?></td>
-        <td><?php echo $value['shipping'] ?></td>
-        <td><?php echo $value['cash on delivery'] ?></td>
-        <td><?php echo $value['total without DPH'] ?></td>
-        <td><?php echo $value['total with DPH'] ?></td>
-        <td><?php echo $value['total with DPH and package'] ?></td>
+        <td><?php echo $value['príjemca-štát'] ?></td>
+        <td><?php echo $value['váha'] . " kg" ?></td>
+        <td><?php
+          if (!empty($value['dobierka'])) {
+            echo $value['dobierka'] . " €";
+          }else{
+            echo "0 €";
+          }
+        ?></td>
+        <td><?php echo $value['total without DPH'] . " €" ?></td>
+        <td><?php echo $value['total with DPH'] . " €" ?></td>
+        <td><?php echo $value['total with DPH and package'] . " €" ?></td>
       </tr>
 
   <?php endforeach ?>

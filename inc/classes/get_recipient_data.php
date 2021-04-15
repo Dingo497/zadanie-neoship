@@ -102,6 +102,104 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
+//	Na vypocet ceny prepravy balika
+	function HUCZ_shipping() {
+		foreach ($this->array as $key => $value) {
+			if ($value['príjemca-štát'] == 'Česká republika [CZ]' || $value['príjemca-štát'] == 'Maďarská republika [HU]') {
+				$rec_weight = $value['váha'];
+				if ($this->get_minMax($rec_weight, 0.00, 5.00)) {
+					$this->set_new_value($key, 'shipping', 4.35);
+				}
+				if ($this->get_minMax($rec_weight, 5.01, 10.00)) {
+					$this->set_new_value($key, 'shipping', 4.9);
+				}
+				if ($this->get_minMax($rec_weight, 10.01, 15.00)) {
+					$this->set_new_value($key, 'shipping', 6);
+				}
+				if ($this->get_minMax($rec_weight, 15.01, 20.00)) {
+					$this->set_new_value($key, 'shipping', 7.5);
+				}
+				if ($this->get_minMax($rec_weight, 20.01, 25.00)) {
+					$this->set_new_value($key, 'shipping', 8.5);
+				}
+				if ($this->get_minMax($rec_weight, 25.01, 30.00)) {
+					$this->set_new_value($key, 'shipping', 10.10);
+				}
+				if ($this->get_minMax($rec_weight, 30.01, 40.00)) {
+					$this->set_new_value($key, 'shipping', 13.60);
+				}
+				if ($this->get_minMax($rec_weight, 40.01, 50.00)) {
+					$this->set_new_value($key, 'shipping', 16.60);
+				}
+				if ($this->get_minMax($rec_weight, 50.01, 999.99)) {
+					$discount = $this->discount_maxKg($rec_weight);
+					$this->set_new_value($key, 'shipping', $discount);
+				}
+			}
+		}
+	}
+
+
+//	Na vypocet ceny prepravy balika
+	function AT_shipping() {
+		foreach ($this->array as $key => $value) {
+			if ($value['príjemca-štát'] == 'Rakúsko [AT]') {
+				$rec_weight = $value['váha'];
+				if ($this->get_minMax($rec_weight, 0.00, 3.00)) {
+					$this->set_new_value($key, 'shipping', 6.2);
+				}
+				if ($this->get_minMax($rec_weight, 3.01, 5.00)) {
+					$this->set_new_value($key, 'shipping', 6.7);
+				}
+				if ($this->get_minMax($rec_weight, 5.01, 10.00)) {
+					$this->set_new_value($key, 'shipping', 7.2);
+				}
+				if ($this->get_minMax($rec_weight, 10.01, 15.00)) {
+					$this->set_new_value($key, 'shipping', 8.2);
+				}
+				if ($this->get_minMax($rec_weight, 15.01, 20.00)) {
+					$this->set_new_value($key, 'shipping', 9.2);
+				}
+				if ($this->get_minMax($rec_weight, 20.01, 25.00)) {
+					$this->set_new_value($key, 'shipping', 11.2);
+				}
+				if ($this->get_minMax($rec_weight, 25.01, 30.00)) {
+					$this->set_new_value($key, 'shipping', 12.5);
+				}
+				if ($this->get_minMax($rec_weight, 30.01, 40.00)) {
+					$this->set_new_value($key, 'shipping', 15.80);
+				}
+				if ($this->get_minMax($rec_weight, 40.01, 50.00)) {
+					$this->set_new_value($key, 'shipping', 18.50);
+				}
+				if ($this->get_minMax($rec_weight, 50.01, 999.99)) {
+					$discount = $this->discount_maxKg($rec_weight);
+					$this->set_new_value($key, 'shipping', $discount);
+				}
+			}
+		}
+	}	
+
+
+//	Ci ma v zasielke dobierku na HU, CZ ak ano daj jej poplatok
+	function HUCZ_shipping_cash(){
+		foreach ($this->array as $key => $value) {
+			if ($value['príjemca-štát'] == 'Česká republika [CZ]' || $value['príjemca-štát'] == 'Maďarská republika [HU]' && $value['dobierka'] == true) {
+				if ($this->get_minMax($value['dobierka'], 0.01, 500.00)) {
+					$this->set_new_value($key, 'cash on delivery', 1.6);
+				}
+				if ($this->get_minMax($value['dobierka'], 500.01, 1000.00)) {
+					$this->set_new_value($key, 'cash on delivery', 3.6);
+				}
+				if ($this->get_minMax($value['dobierka'], 1000.01, 3300.00)) {
+					$result = ($value['dobierka'] / 100) * 1.05 + $value['dobierka'];
+					$this->set_new_value($key, 'cash on delivery', $result);
+				}
+			}
+		}
+	}
+
+
 //	Ci ma v zasielke dobierku na SK ak ano daj jej poplatok
 	function SK_shipping_cash(){
 		foreach ($this->array as $key => $value) {
@@ -114,9 +212,25 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
-	function SK_shipping_extras(){
+//	Ci ma v zasielke dobierku na AT ak ano daj jej poplatok
+	function AT_shipping_cash(){
 		foreach ($this->array as $key => $value) {
-			if ($value['príjemca-štát'] == 'Slovenská republika [SK]') {
+			if ($value['príjemca-štát'] == 'Rakúsko [AT]' && $value['dobierka'] == true) {
+				if ($this->get_minMax($value['dobierka'], 0.01, 1000.00)) {
+					$this->set_new_value($key, 'cash on delivery', 4.6);
+				}
+				if ($this->get_minMax($value['dobierka'], 1000.01, 3300.00)) {
+					$result = ($value['dobierka'] / 100) * 1.6 + $value['dobierka'];
+					$this->set_new_value($key, 'cash on delivery', $result);
+				}
+			}
+		}
+	}
+
+
+	function shipping_extras($country){
+		foreach ($this->array as $key => $value) {
+			if ($value['príjemca-štát'] == $country) {
 				if ($value['príplatky'] == 'ZM') {
 					$this->set_new_value($key, 'extras', 3.49);
 				}
@@ -156,7 +270,14 @@ class get_recipient_data extends base_get_recipient_data {
 	function result_data(){
 		$this->SK_shipping();
 		$this->SK_shipping_cash();
-		$this->SK_shipping_extras();
+		$this->shipping_extras('Slovenská republika [SK]');
+		$this->HUCZ_shipping();
+		$this->HUCZ_shipping_cash();
+		$this->shipping_extras('Maďarská republika [HU]');
+		$this->shipping_extras('Česká republika [CZ]');
+		$this->AT_shipping();
+		$this->AT_shipping_cash();
+		$this->shipping_extras('Rakúsko [AT]');
 		$this->total_withoutDPH();
 		$this->total_withDPH();
 		$this->total_withDPH_and_package();
