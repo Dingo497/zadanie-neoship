@@ -38,6 +38,17 @@
       </form>
     </div>
   </div>
+
+
+  <?php if (isset($_GET['error'])): ?>
+    <?php if ($_GET['error'] == 'invalidfilesuffix'): ?>
+      <h2 class='text-danger h2 text-center mt-3'>Prosím vložte súbor s xls, csv alebo xlsx príponou!</h2>
+    <?php endif ?>
+    <?php if ($_GET['error'] == 'none'): ?>
+      <h2 class='text-success h2 text-center mt-3'>Súbor bol spracovaný!</h2>
+    <?php endif ?>
+  <?php endif ?>
+
     
   <table class="table mt-5 border border-0 border-secondary">
     <thead>
@@ -57,7 +68,7 @@
   <?php foreach ($_SESSION['final_array'] as $key => $value) : ?>
     <?php if (is_array($value)): ?>
       
-      <tr class="new-row" id="<?php echo $key?>">
+      <tr class="new-row m-0 p-0" id="<?php echo $key?>">
         <td><?php echo $value['referenčné číslo'] ?></td>
         <td><?php echo $value['príjemca-štát'] ?></td>
         <td><?php echo $value['váha'] . " kg" ?></td>
@@ -72,7 +83,7 @@
         <td><?php echo $value['total with DPH'] . " €" ?></td>
         <td><?php echo $value['total with DPH and package'] . " €" ?></td>
       </tr>
-      <tr class="descriptions" style="font-size: 12px;" id="<?php echo $key?>">
+      <tr class="descriptions m-0 p-0" style="font-size: 12px;" id="<?php echo $key?>">
         <td>Meno: <?php echo $value['príjemca-meno'] ?></td>
         <td>Mesto: <?php echo $value['príjemca-mesto'] ?></td>
         <td>Ulica: <?php echo $value['príjemca-ulica'] ?></td>
@@ -85,7 +96,7 @@
 
     <?php endif ?>
   <?php endforeach ?>
-      <tr class="bg-success bg-gradient text-white">
+      <tr class="bg-success bg-gradient text-white p-0">
         <th>Spolu</th>
         <th></th>
         <th></th>

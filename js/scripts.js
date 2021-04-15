@@ -11,15 +11,15 @@ newRow.css('cursor', 'pointer');
 
 newRow.on('click', function(){
 
-	$(this).addClass('bg-success bg-gradient text-white')
+	$(this).addClass('bg-success bg-gradient text-white p-0')
 				 .next()
 				 .fadeToggle('fast')
 				 .addClass('bg-success bg-gradient text-white')
 				 .siblings('.descriptions')
-				 .removeClass('bg-success bg-gradient text-white')
+				 .removeClass('bg-success bg-gradient text-white p-0')
 				 .fadeOut('fast')
 				 .prev()
-				 .removeClass('bg-success bg-gradient text-white');
+				 .removeClass('bg-success bg-gradient text-white p-0');
 
 });
 
