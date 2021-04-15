@@ -54,11 +54,11 @@
     <tbody>
 
 <?php if (!empty($_SESSION['final_array'])) : //session_destroy(); ?>
-  <?php foreach ($_SESSION['final_array'] as $value) : ?>
+  <?php foreach ($_SESSION['final_array'] as $key => $value) : ?>
     <?php if (is_array($value)): ?>
       
-      <tr>
-        <td><a href=""><?php echo $value['referenčné číslo'] ?></a></td>
+      <tr class="new-row" id="<?php echo $key?>">
+        <td><?php echo $value['referenčné číslo'] ?></td>
         <td><?php echo $value['príjemca-štát'] ?></td>
         <td><?php echo $value['váha'] . " kg" ?></td>
         <td><?php
@@ -72,6 +72,16 @@
         <td><?php echo $value['total with DPH'] . " €" ?></td>
         <td><?php echo $value['total with DPH and package'] . " €" ?></td>
       </tr>
+      <tr class="descriptions" style="font-size: 12px;" id="<?php echo $key?>">
+        <td>Meno: <?php echo $value['príjemca-meno'] ?></td>
+        <td>Mesto: <?php echo $value['príjemca-mesto'] ?></td>
+        <td>Ulica: <?php echo $value['príjemca-ulica'] ?></td>
+        <td>PSČ: <?php echo $value['príjemca-PSČ'] ?></td>
+        <td>Email: <?php echo $value['príjemca-email'] ?></td>
+        <td>Tel: <?php echo $value['príjemca-tel'] ?></td>
+        <td>Mena:<?php echo $value['mena dobierky'];
+        if ($value['príplatky']){ echo ", Príplatky:".$value['príplatky']; }?></td>
+      </tr>
 
     <?php endif ?>
   <?php endforeach ?>
@@ -80,9 +90,9 @@
         <th></th>
         <th></th>
         <th></th>
-        <th><?php echo $_SESSION['final_array']['all without DPH'] ?></th>
-        <th><?php echo $_SESSION['final_array']['all with DPH'] ?></th>
-        <th><?php echo $_SESSION['final_array']['all'] ?></th>
+        <th><?php echo $_SESSION['final_array']['all without DPH'] . " €" ?></th>
+        <th><?php echo $_SESSION['final_array']['all with DPH'] . " €" ?></th>
+        <th><?php echo $_SESSION['final_array']['all'] . " €" ?></th>
       </tr>
 <?php endif ?>
 
@@ -93,3 +103,7 @@
 
 </body>
 </html>
+
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="js/scripts.js"></script>
