@@ -58,6 +58,10 @@ class base_get_recipient_data {
 		null;
 	}
 
+	public function count_all($what, $where){
+		null;
+	}
+
 }
 
 
@@ -66,6 +70,7 @@ class get_recipient_data extends base_get_recipient_data {
 	private $array;
 	private $rec_country;
 	private $rec_weight;
+	private $all_array;
 
 //	Na priradenie array do classy
 	function __construct($array) {
@@ -321,6 +326,18 @@ class get_recipient_data extends base_get_recipient_data {
 		}
 	}
 
+//	Sucet vsetkych zasielok doprava s DPH bez DPH a spolu zasielka
+	function count_all($what, $where){
+		foreach ($this->array as $key => $value) {
+			if (empty($result)) {
+				$result = $value[$what];
+			}else{
+				$result = $result + $value[$what];
+			}
+		}
+		$this->array[$where] = $result;
+	}
+
 
 // result
 	function result_data(){
@@ -338,6 +355,9 @@ class get_recipient_data extends base_get_recipient_data {
 		$this->total_withoutDPH();
 		$this->total_withDPH();
 		$this->total_withDPH_and_package();
+		$this->count_all('total without DPH', 'all without DPH');
+		$this->count_all('total with DPH', 'all with DPH');
+		$this->count_all('total with DPH and package', 'all');
 		return $this->array;
 	}
 

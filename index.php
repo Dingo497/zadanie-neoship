@@ -39,8 +39,7 @@
     </div>
   </div>
     
-
-  <table class="table mt-5">
+  <table class="table mt-5 border border-0 border-secondary">
     <thead>
       <tr>
         <th>Referenčné číslo</th>
@@ -56,7 +55,8 @@
 
 <?php if (!empty($_SESSION['final_array'])) : //session_destroy(); ?>
   <?php foreach ($_SESSION['final_array'] as $value) : ?>
-
+    <?php if (is_array($value)): ?>
+      
       <tr>
         <td><a href=""><?php echo $value['referenčné číslo'] ?></a></td>
         <td><?php echo $value['príjemca-štát'] ?></td>
@@ -73,7 +73,17 @@
         <td><?php echo $value['total with DPH and package'] . " €" ?></td>
       </tr>
 
+    <?php endif ?>
   <?php endforeach ?>
+      <tr class="bg-success bg-gradient text-white">
+        <th>Spolu</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th><?php echo $_SESSION['final_array']['all without DPH'] ?></th>
+        <th><?php echo $_SESSION['final_array']['all with DPH'] ?></th>
+        <th><?php echo $_SESSION['final_array']['all'] ?></th>
+      </tr>
 <?php endif ?>
 
     </tbody>
