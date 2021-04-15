@@ -192,7 +192,7 @@ class get_recipient_data extends base_get_recipient_data {
 					$this->set_new_value($key, 'cash on delivery', 3.6);
 				}
 				if ($this->get_minMax($value['dobierka'], 1000.01, 3300.00)) {
-					$result = ($value['dobierka'] / 100) * 1.05 + $value['dobierka'];
+					$result = ($value['dobierka'] / 100) * 1.05;
 					$this->set_new_value($key, 'cash on delivery', $result);
 				}
 			}
@@ -220,7 +220,7 @@ class get_recipient_data extends base_get_recipient_data {
 					$this->set_new_value($key, 'cash on delivery', 4.6);
 				}
 				if ($this->get_minMax($value['dobierka'], 1000.01, 3300.00)) {
-					$result = ($value['dobierka'] / 100) * 1.6 + $value['dobierka'];
+					$result = ($value['dobierka'] / 100) * 1.6;
 					$this->set_new_value($key, 'cash on delivery', $result);
 				}
 			}
@@ -267,7 +267,18 @@ class get_recipient_data extends base_get_recipient_data {
 	}
 
 
+	function clear_arr(){
+		foreach ($this->array as $key => $value) {
+			$result = str_replace(',', '', $value['dobierka']);
+			$this->set_new_value($key, 'dobierka', $result);
+			$result = str_replace(',', '', $value['váha']);
+			$this->set_new_value($key, 'váha', $result);
+		}
+	}
+
+
 	function result_data(){
+		$this->clear_arr();
 		$this->SK_shipping();
 		$this->SK_shipping_cash();
 		$this->shipping_extras('Slovenská republika [SK]');
