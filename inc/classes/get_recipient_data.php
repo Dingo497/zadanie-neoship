@@ -160,10 +160,7 @@ class get_recipient_data extends base_get_recipient_data {
 		$this->total_withoutDPH();
 		$this->total_withDPH();
 		$this->total_withDPH_and_package();
-		//return $this->rec_weight;
-	}
-
-	function shit(){
 		return $this->array;
 	}
+
 }

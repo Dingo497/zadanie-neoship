@@ -13,6 +13,7 @@
   ini_set('display_errors', '1');
   ini_set('display_startup_errors', '1');
   error_reporting(E_ALL);
+  session_start();
   ?>
 
     <title>Zadanie Neoship</title>
@@ -43,38 +44,45 @@
       </form>
     </div>
   </div>
-
+    
 
   <table class="table mt-5">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Referenčné číslo</th>
+        <th scope="col">Dobierka bez DPH</th>
+        <th scope="col">Váha</th>
+        <th scope="col">Príplatky(cena)</th>
+        <th scope="col">Doprava</th>
+        <th scope="col">Poplatok za dobierku</th>
+        <th scope="col">Spolu doprava bez DPH</th>
+        <th scope="col">Spolu doprava s DPH</th>
+        <th scope="col">Spolu s dobierkou s DPH</th>
       </tr>
     </thead>
     <tbody>
+
+<?php if (!empty($_SESSION['final_array'])) : ?>
+  <?php foreach ($_SESSION['final_array'] as $value) : ?>
+
       <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <td><a href=""><?php echo $value['referenčné číslo'] ?></a></td>
+        <td><?php echo $value['dobierka'] ?></td>
+        <td><?php echo $value['váha'] ?></td>
+        <td><?php echo $value['extras'] ?></td>
+        <td><?php echo $value['shipping'] ?></td>
+        <td><?php echo $value['cash on delivery'] ?></td>
+        <td><?php echo $value['total without DPH'] ?></td>
+        <td><?php echo $value['total with DPH'] ?></td>
+        <td><?php echo $value['total with DPH and package'] ?></td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Larry the Bird</td>
-        <td>@twitter</td>
-        <td>something</td>
-      </tr>
+
+  <?php endforeach ?>
+<?php endif ?>
+
     </tbody>
   </table>
+
 </div>
 
 </body>
