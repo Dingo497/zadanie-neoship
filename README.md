@@ -10,4 +10,8 @@ Zadanie som robil v čisom OOP PHP, JavaScript, CSS a HTML.
 2. Excel súbor spracujem podľa pokynov Neoship tímu (výpočet dane, poštovného, pridanie rôznych poplatkov za veľkosť, váhu balíka atď.)
 3. Výpis objednávok do tabuľky a po kliknutí na objednávku sa mi ukážu detaily danej objednávky
 
-## Foto z projektu
+## Upozornenie
+Zadanie obsahuje dva excel súbory.  
+Jeden súbor cenník, slúži na zistenie cien dopravy, prípratkových služieb atď.  
+Druhý súbor zásielky, slúži na nahranie súboru do aplikácie, z ktorého následne vypočítam a vypíšem všetky náležitosti
+
