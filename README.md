@@ -4,6 +4,7 @@ Vytvorenie aplikácie na spracovanie, spočítanie a výpis údajov o zásielkac
 
 ## V čom som to robil
 Zadanie som robil v čisom OOP PHP, JavaScript, CSS a HTML.
+Sem som prvý krát pracoval s Composer, Git, nginx a linux.
 
 ## Ako zadanie funguje
 1. Na domovskej stránke si nahrám excel súbor
